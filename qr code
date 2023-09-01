@@ -1,0 +1,20 @@
+// type: module
+import inquirer from "inquirer";
+import qr from "qr-image";
+import fs from "fs";
+inquirer
+  .prompt([
+    {
+      name: "url",
+      message: "type a website URL",
+    },
+  ])
+  .then((answers) => {
+    const web = answers.url;
+    const qr_svg = qr.image(web);
+    qr_svg.pipe(fs.createWriteStream(`qr_image.png`));
+    fs.writeFile("qr.txt", web, "utf8", (err) => {
+      if (err) throw err;
+      console.log("The file has been saved!");
+    });
+  });
